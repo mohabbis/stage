@@ -19,6 +19,11 @@ struct SettingsView: View {
                         }
                     }
                 }
+                if permissions.needsAccessibilityRelaunch {
+                    Text("Stage is still not trusted. If the switch in System Settings is already on, quit Stage and open it again. macOS applies Accessibility only to a new launch.")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
                 LabeledContent("Screen Recording") {
                     Text(permissions.screenRecording ? "Granted" : "Optional")
                     if !permissions.screenRecording {
@@ -77,11 +82,23 @@ struct SettingsView: View {
 final class PermissionCenter {
     var accessibility = false
     var screenRecording = false
+    private(set) var askedForAccessibility = false
     var dismissedOnboarding = UserDefaults.standard.bool(forKey: "dismissedOnboarding") {
         didSet { UserDefaults.standard.set(dismissedOnboarding, forKey: "dismissedOnboarding") }
     }
 
-    init() { refresh() }
+    var needsAccessibilityRelaunch: Bool {
+        askedForAccessibility && !accessibility
+    }
+
+    init() {
+        refresh()
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                self?.refresh()
+            }
+        }
+    }
 
     func refresh() {
         accessibility = AccessibilityManager.isTrusted
@@ -89,6 +106,7 @@ final class PermissionCenter {
     }
 
     func requestAccessibility() {
+        askedForAccessibility = true
         _ = AccessibilityManager.requestAccessibility()
         refresh()
     }

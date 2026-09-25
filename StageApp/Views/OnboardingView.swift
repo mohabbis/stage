@@ -29,6 +29,12 @@ struct OnboardingView: View {
                 permissions.requestScreenRecording()
                 permissions.openScreenRecordingSettings()
             }
+            if permissions.needsAccessibilityRelaunch {
+                Text("If Accessibility is already on for Stage, quit the app and open it again. macOS does not apply that permission to the copy that is already running.")
+                    .font(.system(size: 12))
+                    .foregroundStyle(StageTheme.amber)
+                    .frame(maxWidth: 520, alignment: .leading)
+            }
             Button("Continue") { permissions.dismissedOnboarding = true }
                 .buttonStyle(StageButtonStyle(kind: permissions.accessibility ? .primary : .quiet))
         }
