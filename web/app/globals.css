@@ -1,0 +1,64 @@
+:root {
+  color-scheme: dark;
+  --bg: #0c0c0a;
+  --ink: #f4f1ea;
+  --muted: #9a958c;
+  --amber: #e8a04a;
+  --line: rgba(255, 255, 255, 0.08);
+  --elev: #1a1916;
+  --full: #8dcea8;
+  --partial: #e8a04a;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--font-sans), sans-serif; }
+a { color: inherit; }
+button, input { font: inherit; color: inherit; }
+.page { min-height: 100vh; background:
+  radial-gradient(900px 420px at 70% -10%, rgba(232, 160, 74, 0.16), transparent 60%),
+  var(--bg); }
+.nav, .hero, .section, footer { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+.nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+.word { font-family: var(--font-serif), serif; font-size: 28px; letter-spacing: -0.03em; }
+.hero { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 36px; align-items: center; padding: 18px 0 64px; }
+h1 { font-family: var(--font-serif), serif; font-weight: 400; font-size: clamp(52px, 7vw, 84px); line-height: 0.92; letter-spacing: -0.04em; margin: 0 0 16px; }
+.lede { color: var(--muted); font-size: 18px; line-height: 1.5; max-width: 38ch; }
+.actions { display: flex; gap: 10px; align-items: center; margin-top: 22px; flex-wrap: wrap; }
+.primary, .quiet {
+  border: 0; border-radius: 999px; padding: 11px 16px; text-decoration: none; cursor: pointer;
+}
+.primary { background: var(--amber); color: #1a1208; font-weight: 650; }
+.quiet { background: rgba(255,255,255,0.06); }
+.note { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
+.demo { background: #141310; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; min-height: 560px; display: grid; grid-template-columns: 200px 1fr 230px; }
+.demo header { grid-column: 1 / -1; display: flex; gap: 8px; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: #3a3833; }
+.side, .inspector { padding: 14px; }
+.side { border-right: 1px solid var(--line); }
+.inspector { border-left: 1px solid var(--line); }
+.side button, .savebar button { width: 100%; text-align: left; background: transparent; border: 0; padding: 8px; border-radius: 8px; cursor: pointer; }
+.side button.active { background: rgba(255,255,255,0.06); }
+.canvas { position: relative; margin: 16px; }
+.stage { position: relative; height: 430px; }
+.display { position: absolute; border: 1px solid rgba(255,255,255,0.14); border-radius: 12px; background: #101214; }
+.tile { position: absolute; border-radius: 6px; padding: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.16); transition: left .7s cubic-bezier(.2,.8,.2,1), top .7s cubic-bezier(.2,.8,.2,1), width .7s cubic-bezier(.2,.8,.2,1), height .7s cubic-bezier(.2,.8,.2,1); }
+.tile strong, .tile span { display: block; font-size: 11px; }
+.tile span { color: rgba(244,241,234,0.7); }
+.badge { font-size: 11px; border-radius: 99px; padding: 2px 7px; }
+.badge.Full { color: var(--full); background: rgba(141,206,168,0.14); }
+.badge.Partial { color: var(--partial); background: rgba(232,160,74,0.14); }
+.app { padding: 8px 0; border-top: 1px solid var(--line); }
+.app p, .limits { color: var(--muted); font-size: 12px; }
+.savebar { display: flex; gap: 8px; padding: 0 16px 16px; }
+.savebar input { flex: 1; background: #1c1b18; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+.section { padding: 10px 0 70px; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 18px; }
+.section article { background: var(--elev); border-radius: 16px; padding: 18px; border: 1px solid var(--line); }
+.section h2 { font-family: var(--font-serif), serif; font-weight: 400; margin: 0 0 8px; }
+footer { padding: 10px 0 40px; color: var(--muted); font-size: 13px; }
+@media (max-width: 980px) {
+  .hero, .section, .demo { grid-template-columns: 1fr; }
+  .inspector, .side { border: 0; }
+  .stage { height: 320px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tile { transition: none; }
+}
