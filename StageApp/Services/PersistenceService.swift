@@ -47,6 +47,7 @@ final class StageStore {
     private(set) var loadError: String?
     var pendingCapture = false
     var pendingRestoreID: UUID?
+    private let container: ModelContainer
     private let context: ModelContext
 
     init() {
@@ -56,17 +57,17 @@ final class StageStore {
             try FileManager.default.createDirectory(at: support, withIntermediateDirectories: true)
             let storeURL = support.appendingPathComponent("workspaces.store")
             let configuration = ModelConfiguration("Stage", url: storeURL)
-            let container = try ModelContainer(for: WorkspaceRecord.self, configurations: configuration)
-            context = container.mainContext
-            load()
+            container = try ModelContainer(for: WorkspaceRecord.self, configurations: configuration)
+            loadError = nil
         } catch {
-            let container = try! ModelContainer(
+            container = try! ModelContainer(
                 for: WorkspaceRecord.self,
                 configurations: ModelConfiguration(isStoredInMemoryOnly: true)
             )
-            context = container.mainContext
             loadError = "Workspaces could not be saved to disk, so they will last until you quit Stage."
         }
+        context = container.mainContext
+        load()
     }
 
     func load() {
@@ -131,7 +132,8 @@ final class StageStore {
     }
 
     private func record(id: UUID) -> WorkspaceRecord? {
-        let descriptor = FetchDescriptor<WorkspaceRecord>()
-        return (try? context.fetch(descriptor))?.first { $0.id == id }
+        let target = id
+        let descriptor = FetchDescriptor<WorkspaceRecord>(predicate: #Predicate { $0.id == target })
+        return try? context.fetch(descriptor).first
     }
 }
