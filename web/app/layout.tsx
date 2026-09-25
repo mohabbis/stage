@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     "Stage saves the arrangement of a Mac workspace and restores it later. Windows, displays, tabs, folders, and terminals. Local, native, and honest about what macOS will allow.",
 };
 
-export const viewport = { themeColor: "#0c0c0a" };
+export const viewport = { themeColor: "#0e0d0b" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
